@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>df0c0884-4e55-47c1-8721-9ea8059a9b99</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>LEDShow.py</StartupFile>
+    <StartupFile>ledshow.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="LEDShow.py" />
+    <Compile Include="ledshow.py" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
