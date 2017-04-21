@@ -23,6 +23,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ledshow.py" />
+    <Compile Include="mythread.py">
+      <SubType>Code</SubType>	
+    </Compile>
+    <Compile Include="pingsensor.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
