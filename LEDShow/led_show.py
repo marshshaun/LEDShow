@@ -1,5 +1,5 @@
 import time
-from pingsensor import PingSensor
+from ping_sensor import PingSensor
 from repeat_timer import RepeatTimer
 
 class LEDShow(object):

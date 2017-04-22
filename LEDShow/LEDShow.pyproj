@@ -22,11 +22,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ledshow.py" />
+    <Compile Include="led_show.py" />
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="pingsensor.py">
+    <Compile Include="ping_sensor.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="repeat_timer.py">
