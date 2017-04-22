@@ -1,15 +1,15 @@
 from animation import Animation
+import time
 
 class AnimationWipe(Animation):
     """description of class"""
 
     def __init__(self):
-        pass
+        self.show = False
 
-    def start(self):
-        print("wipe animation started")
-
-    def stop(self):
-        print("wipe animation stopped")
-
+    def run(self, strip):        
+       for i in range(strip.numPixels()):
+            strip.setPixelColorRGB(i, 0, 255, 0)
+            strip.show()
+            time.sleep(21/500)
 

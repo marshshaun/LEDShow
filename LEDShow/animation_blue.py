@@ -1,4 +1,5 @@
 from animation import Animation
+import time
 
 class AnimationBlue(Animation):
     """description of class"""
@@ -6,10 +7,10 @@ class AnimationBlue(Animation):
     def __init__(self):
         pass
 
-    def start(self):
-        print("blue animation started")
-
-    def stop(self):
-        print("blue animation stopped")
+    def run(self, strip):
+        for i in range(strip.numPixels()):
+            strip.setPixelColorRGB(i, 0, 0, 255)
+            strip.show()
+            time.sleep(21/500)
 
 

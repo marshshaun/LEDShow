@@ -3,6 +3,7 @@ from ping_sensor import PingSensor
 from repeat_timer import RepeatTimer
 import RPi.GPIO as GPIO
 from neopixel import *
+from repeat_timer import RepeatTimer
 from animation_blue import AnimationBlue
 from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
@@ -22,6 +23,7 @@ class LEDShow(object):
     animations = []
     animationIndex = 0
     currentAnimation = None
+    duration = 10    
 
     def __init__(self):
 
@@ -38,17 +40,21 @@ class LEDShow(object):
         strip.show()
         
         LEDShow.animations = [AnimationWipe(), AnimationGreen(), AnimationBlue()]   
-        self.nextAnimation()                     
-            
+        self.nextAnimation();
+
+        timer = RepeatTimer()
+        timer.start(LEDShow.duration, self.nextAnimation);
+
+        while(not(LEDShow.currentAnimation == None)):
+              LEDShow.currentAnimation.run(strip)
+                    
 
     def setDistance(self, d):
         distance = d
         print("distance: "+str(distance))
 
+
     def nextAnimation(self):
-        if not(LEDShow.currentAnimation == None):
-            LEDShow.currentAnimation.stop()
         LEDShow.currentAnimation = LEDShow.animations[LEDShow.animationIndex]
-        LEDShow.currentAnimation.start()
         LEDShow.animationIndex = 0 if (LEDShow.animationIndex == len(LEDShow.animations)-1) else (LEDShow.animationIndex + 1)
 

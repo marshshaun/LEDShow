@@ -22,6 +22,18 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="animation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="animation_blue.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="animation_green.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="animation_wipe.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="led_show.py" />
     <Compile Include="main.py">
       <SubType>Code</SubType>
