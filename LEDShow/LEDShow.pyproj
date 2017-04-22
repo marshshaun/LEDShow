@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>df0c0884-4e55-47c1-8721-9ea8059a9b99</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ledshow.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,10 +23,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ledshow.py" />
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="mythread.py">
-      <SubType>Code</SubType>	
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="pingsensor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="repeat_timer.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

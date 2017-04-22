@@ -1,13 +1,12 @@
 import RPi.GPIO as GPIO
 import time
-from threading import Event
-from mythread import MyThread
+from repeat_timer import RepeatTimer
 
 class PingSensor(object):
 
     def __init__(self):
         self.interval = 0
-        self.stopPing = Event()
+        self.timer = RepeatTimer()
 
     def ping(self):
         try:
@@ -51,11 +50,9 @@ class PingSensor(object):
     def setInterval(self, interval, pin=11):
         if(interval <= 0):
             self.interval = 0
-            self.stopPing.set()
+            self.timer.stop()
             return
         if(interval != self.interval):
-            self.stopPing.set()
             self.interval = interval
-            self.stopPing = Event()
-            MyThread(self.stopPing, self.interval, self.ping).start()
+            self.timer.start(self.interval, self.ping)
 
