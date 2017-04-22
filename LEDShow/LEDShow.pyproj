@@ -26,9 +26,6 @@
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="mythread.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="pingsensor.py">
       <SubType>Code</SubType>
     </Compile>

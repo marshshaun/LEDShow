@@ -4,8 +4,9 @@ from repeat_timer import RepeatTimer
 
 class PingSensor(object):
 
-    def __init__(self):
+    def __init__(self, callback):
         self.interval = 0
+        self.callback = callback
         self.timer = RepeatTimer()
 
     def ping(self):
@@ -43,7 +44,7 @@ class PingSensor(object):
             # object we take half of the distance travelled.
             # distance = duration / 29 / 2
             distance = duration * 34000 / 2
-            print (str(distance)+"cm")
+            self.callback(distance)
         finally:
             GPIO.cleanup()
 
