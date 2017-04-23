@@ -7,9 +7,12 @@ class AnimationWipe(Animation):
     def __init__(self):
         self.show = False
 
-    def run(self, strip):        
-       for i in range(strip.numPixels()):
-            strip.setPixelColorRGB(i, 0, 255, 0)
-            strip.show()
+    def run(self, leds):        
+       for i in range(leds.numPixels()):
+            leds.setPixelColor(i, 0, 255, 0)
+            leds.show()
             time.sleep(21/500)
+
+    def pingInterval(self):
+        return 5
 

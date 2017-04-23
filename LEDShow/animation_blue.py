@@ -7,10 +7,12 @@ class AnimationBlue(Animation):
     def __init__(self):
         pass
 
-    def run(self, strip):
-        for i in range(strip.numPixels()):
-            strip.setPixelColorRGB(i, 0, 0, 255)
-            strip.show()
+    def run(self, leds):
+        for i in range(leds.numPixels()):
+            leds.setPixelColor(i, 0, 0, 255)
+            leds.show()
             time.sleep(21/500)
 
 
+    def pingInterval(self):
+        return super().pingInterval()

@@ -23,30 +23,34 @@ class LEDShow(object):
     animations = []
     animationIndex = 0
     currentAnimation = None
-    duration = 10    
+    duration = 10  
 
     def __init__(self):
 
         #initialize ping sensor
-        sensor = PingSensor(self.setDistance)
+        self.sensor = PingSensor(self.setDistance)
         
         #initialize neopixel object
-        strip = Adafruit_NeoPixel(LEDShow.LED_COUNT, LEDShow.LED_PIN, LEDShow.LED_FREQ_HZ, LEDShow.LED_DMA, LEDShow.LED_INVERT, LEDShow.LED_BRIGHTNESS)
-        strip.begin()	    
-
-        strip.setPixelColorRGB(0, 0, 0, 0)
-        strip.setPixelColor(8, Color(0, 0, 0))
-        strip.setPixelColor(16, Color(0,0,0))
-        strip.show()
+        self.strip = Adafruit_NeoPixel(LEDShow.LED_COUNT, LEDShow.LED_PIN, LEDShow.LED_FREQ_HZ, LEDShow.LED_DMA, LEDShow.LED_INVERT, LEDShow.LED_BRIGHTNESS)
+        self.strip.begin()	    
         
-        LEDShow.animations = [AnimationWipe(), AnimationGreen(), AnimationBlue()]   
+        #list of animations to cycle through
+        LEDShow.animations = [
+            AnimationWipe(), 
+            AnimationGreen(), 
+            AnimationBlue()
+            ]   
+
+        #initialize animations
         self.nextAnimation();
 
+        #timer will trigger next animation on each interval
         timer = RepeatTimer()
         timer.start(LEDShow.duration, self.nextAnimation);
 
-        while(not(LEDShow.currentAnimation == None)):
-              LEDShow.currentAnimation.run(strip)
+        #animation loop
+        while(not(LEDShow.currentAnimation == None)):        
+            LEDShow.currentAnimation.run(self)
                     
 
     def setDistance(self, d):
@@ -57,4 +61,13 @@ class LEDShow(object):
     def nextAnimation(self):
         LEDShow.currentAnimation = LEDShow.animations[LEDShow.animationIndex]
         LEDShow.animationIndex = 0 if (LEDShow.animationIndex == len(LEDShow.animations)-1) else (LEDShow.animationIndex + 1)
+
+    def setPixelColor(self, pixel, red, green, blue):
+        self.strip.setPixelColorRGB(pixel, red, green, blue)
+
+    def show(self):
+        self.strip.show()
+
+    def numPixels(self):
+        return self.strip.numPixels()
 
