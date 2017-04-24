@@ -2,12 +2,20 @@ import RPi.GPIO as GPIO
 import time
 
 class PingSensor(object):
+    """ Controls the GPIO of the ultrasonic sensor and reports distance of detected object(s) 
+    
+        Attributes: 
+            callback: Method invoked on ping readings
+    """        
 
     def __init__(self, callback):
-        self.interval = 0
+        """ Register callback to broadcast ping results """
         self.callback = callback
 
     def ping(self):
+        """ Execute GPIO sequence and evaulate time differences to derive distance 
+            of detected object(s)
+        """
         GPIO.setup(11, GPIO.OUT)
         # Set to low
         GPIO.output(11, False)

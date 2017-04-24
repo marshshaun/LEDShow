@@ -7,6 +7,7 @@ from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
 
 class LEDShow(object):
+    """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
 
     # LED strip configuration:
     LED_COUNT      = 256        # Number of LED pixels.
@@ -16,13 +17,16 @@ class LEDShow(object):
     LED_BRIGHTNESS = 10         # Set to 0 for darkest and 255 for brightest
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
+    #Sensor configuration
     ANIMATION_DURATION = 60     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
-    MAX_DISTANCE = 350          
-    ACCURACY = 5                
+    MAX_DISTANCE = 350          # The maximum distance accepted from the ultrasonic sensor (cm)
+    ACCURACY = 5                # The difference in distance between readings needs to be greater than this value to trigger an update.
+
 
     def __init__(self):
+        """ Initialize sensor readings and led animations """
 
-        #initialize ping sensor
+        #initialize ping sensor and register callback
         self.sensor = PingSensor(self.setDistance)
         
         #initialize neopixel object
@@ -62,14 +66,19 @@ class LEDShow(object):
 
 
     def setDistance(self, d):
+        """ The sensor callback evaluates the reported distance then sends it to the current
+            animation when a change is detected. Also queues the next animation when the 
+            *ANIMATION_DURATION* has expired.
+        """
 
         #increment animation time
         self.animationTime += self.pingInterval
         self.startPingInterval = time.time()
-        print("distance: "+str(d)+" "+str(self.animationTime)+" "+str(self.currentAnimation.running()))  
+        print("distance: "+str(d)+" animation time:"+str(self.animationTime))  
         
-        #only update animation when new distance is less than MAX_DISTANCE
-        #and differs(within the ACCURACY range) from the previous 
+        #only update animation when new distance is less than MAX_DISTANCE,
+        #differs(within the ACCURACY range) from the previous,
+        #and the animation is inactive (not currently running)
         distance = int(d)
         if(distance < LEDShow.MAX_DISTANCE 
            and not self.withinAccuracyRange(distance)
@@ -87,10 +96,16 @@ class LEDShow(object):
 
 
     def withinAccuracyRange(self, d):
-        return d > self.distance - 5 and d < self.distance + 5
+        """ Returns True if the provided distance is within a certain number 
+            of centimeters of the current distance. 
+        """
+        return d > self.distance - LEDShow.ACCURACY and d < self.distance + LEDShow.ACCURACY
 
 
     def nextAnimation(self):
+        """ Queues the next animation in the list and updates the sensor interval.
+            If the current animation is at the end of the list, the sequence starts over.
+        """
         self.currentAnimation = self.animations[self.animationIndex]
         self.animationIndex = 0 if (self.animationIndex == len(self.animations)-1) else (self.animationIndex + 1)
         self.animationTime = 0
@@ -98,16 +113,20 @@ class LEDShow(object):
         self.pingInterval = self.currentAnimation.pingInterval()        
 
     def clearPixels(self):
+        """ Clears all pixels in the strip """
         for i in range(self.numPixels()):
             self.setPixelColor(i, 0, 0, 0)
         self.show()
 
     def setPixelColor(self, pixel, red, green, blue):
+        """ Set specified LED to RGB value """
         self.strip.setPixelColorRGB(pixel, red, green, blue)
 
     def show(self):
+        """ Refresh LEDs """
         self.strip.show()
 
     def numPixels(self):
+        """ The strips LED count """
         return self.strip.numPixels()
 

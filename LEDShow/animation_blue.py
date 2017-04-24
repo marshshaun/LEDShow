@@ -1,8 +1,8 @@
-from animation import Animation
+from _animation import Animation
 import time
 
 class AnimationBlue(Animation):
-    """description of class"""
+    """PLACEHOLDER ANIMATION"""
 
     def __init__(self):
         self._running = False

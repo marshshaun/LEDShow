@@ -22,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="animation.py">
+    <Compile Include="_animation.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="animation_blue.py">
@@ -39,9 +39,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ping_sensor.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="repeat_timer.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
