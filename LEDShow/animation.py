@@ -8,7 +8,11 @@ class Animation(object):
         pass
 
     @abstractmethod
+    def running():
+        return false
+
+    @abstractmethod
     def pingInterval(self):
         return 1
 
-
+    

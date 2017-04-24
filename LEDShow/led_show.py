@@ -1,9 +1,7 @@
 import time
 from ping_sensor import PingSensor
-from repeat_timer import RepeatTimer
 import RPi.GPIO as GPIO
 from neopixel import *
-from repeat_timer import RepeatTimer
 from animation_blue import AnimationBlue
 from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
@@ -18,12 +16,9 @@ class LEDShow(object):
     LED_BRIGHTNESS = 10         # Set to 0 for darkest and 255 for brightest
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
-    #current ping sensor distance(cm)
-    distance = 0
-    animations = []
-    animationIndex = 0
-    currentAnimation = None
-    duration = 10  
+    ANIMATION_DURATION = 60     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
+    MAX_DISTANCE = 350          
+    ACCURACY = 5                
 
     def __init__(self):
 
@@ -35,32 +30,77 @@ class LEDShow(object):
         self.strip.begin()	    
         
         #list of animations to cycle through
-        LEDShow.animations = [
+        self.animations = [
             AnimationWipe(), 
             AnimationGreen(), 
             AnimationBlue()
             ]   
 
+        #index of current animation
+        self.animationIndex = 0       
+
         #initialize animations
-        self.nextAnimation();
+        self.nextAnimation()
+        self.pingInterval = self.currentAnimation.pingInterval()
+        self.startPingInterval = time.time()
 
-        #timer will trigger next animation on each interval
-        timer = RepeatTimer()
-        timer.start(LEDShow.duration, self.nextAnimation);
+        #ping loop
+        try:
+            GPIO.setmode(GPIO.BOARD)
+            self.sensor.ping()
 
-        #animation loop
-        while(not(LEDShow.currentAnimation == None)):        
-            LEDShow.currentAnimation.run(self)
-                    
+            #emit ping every interval defined by the animation
+            while(True):
+                self.endPingInterval = time.time() - self.startPingInterval
+                if(self.endPingInterval >= self.pingInterval):
+                    self.sensor.ping()
+
+        #cleanup
+        finally: 
+            GPIO.cleanup()
+            self.clearPixels()
+
 
     def setDistance(self, d):
-        distance = d
-        print("distance: "+str(distance))
+
+        #increment animation time
+        self.animationTime += self.pingInterval
+        self.startPingInterval = time.time()
+        print("distance: "+str(d)+" "+str(self.animationTime)+" "+str(self.currentAnimation.running()))  
+        
+        #only update animation when new distance is less than MAX_DISTANCE
+        #and differs(within the ACCURACY range) from the previous 
+        distance = int(d)
+        if(distance < LEDShow.MAX_DISTANCE 
+           and not self.withinAccuracyRange(distance)
+           and not self.currentAnimation.running()):
+            self.distance = distance
+            self.currentAnimation.run(self)
+
+        #bypass cycling if less than 2 animations
+        if(len(self.animations) < 2):
+            return
+
+        #trigger next animation
+        if(self.animationTime >= LEDShow.ANIMATION_DURATION):
+            self.nextAnimation()
+
+
+    def withinAccuracyRange(self, d):
+        return d > self.distance - 5 and d < self.distance + 5
 
 
     def nextAnimation(self):
-        LEDShow.currentAnimation = LEDShow.animations[LEDShow.animationIndex]
-        LEDShow.animationIndex = 0 if (LEDShow.animationIndex == len(LEDShow.animations)-1) else (LEDShow.animationIndex + 1)
+        self.currentAnimation = self.animations[self.animationIndex]
+        self.animationIndex = 0 if (self.animationIndex == len(self.animations)-1) else (self.animationIndex + 1)
+        self.animationTime = 0
+        self.distance = 0
+        self.pingInterval = self.currentAnimation.pingInterval()        
+
+    def clearPixels(self):
+        for i in range(self.numPixels()):
+            self.setPixelColor(i, 0, 0, 0)
+        self.show()
 
     def setPixelColor(self, pixel, red, green, blue):
         self.strip.setPixelColorRGB(pixel, red, green, blue)
