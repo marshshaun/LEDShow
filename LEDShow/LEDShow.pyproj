@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="utils.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="_animation.py">
       <SubType>Code</SubType>
     </Compile>

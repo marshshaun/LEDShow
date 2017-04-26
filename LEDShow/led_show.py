@@ -2,6 +2,7 @@ import time
 from ping_sensor import PingSensor
 import RPi.GPIO as GPIO
 from neopixel import *
+import utils
 from animation_blue import AnimationBlue
 from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
@@ -25,13 +26,16 @@ class LEDShow(object):
 
     def __init__(self):
         """ Initialize sensor readings and led animations """
-
+        
         #initialize ping sensor and register callback
         self.sensor = PingSensor(self.setDistance)
         
         #initialize neopixel object
         self.strip = Adafruit_NeoPixel(LEDShow.LED_COUNT, LEDShow.LED_PIN, LEDShow.LED_FREQ_HZ, LEDShow.LED_DMA, LEDShow.LED_INVERT, LEDShow.LED_BRIGHTNESS)
-        self.strip.begin()	    
+        self.strip.begin()	   
+        
+        #grid conversion
+        self.grid = utils.stripToGrid(LEDShow.LED_COUNT, 8)
         
         #list of animations to cycle through
         self.animations = [
@@ -112,19 +116,44 @@ class LEDShow(object):
         self.distance = 0
         self.pingInterval = self.currentAnimation.pingInterval()        
 
+
     def clearPixels(self):
         """ Clears all pixels in the strip """
         for i in range(self.numPixels()):
             self.setPixelColor(i, 0, 0, 0)
         self.show()
 
+
     def setPixelColor(self, pixel, red, green, blue):
         """ Set specified LED to RGB value """
-        self.strip.setPixelColorRGB(pixel, red, green, blue)
+        if pixel < LEDShow.LED_COUNT:
+            self.strip.setPixelColorRGB(pixel, green, red, blue)  #GRB to RGB
+
+    
+    def setPixelColorXY(self, x, y, red, green, blue):
+        """ Set color of pixel at specified grid location """
+        if x < len(self.grid) and y < len(self.grid[0]):
+            self.setPixelColor(self.grid[x][y], red, green, blue)
+
+
+    def setRowColor(self, row, red, green, blue):
+        """ Set entire a row to the provided color """
+        if row < len(self.grid[0]):
+            for x in range(len(self.grid)):
+                self.setPixelColorXY(x, row, red, green, blue)
+
+
+    def setColumnColor(self, column, red, green, blue):
+        """ Set entire column to the provided color """
+        if column < len(self.grid):
+            for y in range(len(self.grid[0])):
+                self.setPixelColorXY(column, y, red, green, blue)
+
 
     def show(self):
         """ Refresh LEDs """
         self.strip.show()
+
 
     def numPixels(self):
         """ The strips LED count """

@@ -1,5 +1,6 @@
 from _animation import Animation
 import time
+import utils
 
 class AnimationWipe(Animation):
     """ A bottom-to-top wiping animation that dynamically changeds colors based on sensor distance """
@@ -14,17 +15,17 @@ class AnimationWipe(Animation):
         self._running = True
 
         #color range
-        x = int(self.controlrange(leds.distance, 1.0, 350, 0.0, 255.0))
+        x = int(utils.mapRange(leds.distance, 1.0, 350, 0.0, 255.0))
 
         #bottom section
         for i in range(x):
-           leds.setPixelColor(i, 24, x, 0)
+           leds.setPixelColor(i, x, 24, 0)
            leds.show()
            time.sleep(21/500.0)
 
         #top section
         for i in range(256-x):
-           leds.setPixelColor(i+x, 80, 0, x*2)
+           leds.setPixelColor(i+x, 0, 80, x*2)
            leds.show()
            time.sleep(21/600.0)
 

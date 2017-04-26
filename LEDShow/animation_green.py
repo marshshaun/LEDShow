@@ -10,7 +10,7 @@ class AnimationGreen(Animation):
     def run(self, leds):
        self._running = True
        for i in range(leds.numPixels()):
-            leds.setPixelColor(i, 255, 0, 0)
+            leds.setPixelColor(i, 0, 255, 0)
             leds.show()
             time.sleep(21/500)
        self._running = False
