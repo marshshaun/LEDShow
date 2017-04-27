@@ -38,15 +38,3 @@ class AnimationWipe(Animation):
     def pingInterval(self):
         """ The perferred freqeuncy of distance updates from the sensor """
         return 3
-
-    def	controlrange(self, OldValue, OldMin, OldMax, NewMin, NewMax, clamp = True):
-        """ Maps color range to distance """
-        newValue = ((OldValue - OldMin) /(OldMax - OldMin)) * (NewMax - NewMin) + NewMin
-
-        if clamp:
-            if(newValue < NewMin):
-                newValue = NewMin
-            if(newValue > NewMax):
-                newValue = NewMax
-
-        return newValue

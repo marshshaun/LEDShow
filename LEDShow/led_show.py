@@ -3,9 +3,11 @@ from ping_sensor import PingSensor
 import RPi.GPIO as GPIO
 from neopixel import *
 import utils
+
 from animation_blue import AnimationBlue
 from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
+from animation_warmer import AnimationWarmer
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -19,7 +21,7 @@ class LEDShow(object):
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
-    ANIMATION_DURATION = 60     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
+    ANIMATION_DURATION = 30     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
     MAX_DISTANCE = 350          # The maximum distance accepted from the ultrasonic sensor (cm)
     ACCURACY = 5                # The difference in distance between readings needs to be greater than this value to trigger an update.
 
@@ -40,8 +42,9 @@ class LEDShow(object):
         #list of animations to cycle through
         self.animations = [
             #AnimationWipe(), 
-            AnimationGreen(), 
-            #AnimationBlue()
+            #AnimationGreen(), 
+            #AnimationBlue(),
+            AnimationWarmer()
             ]   
 
         #index of current animation
@@ -126,7 +129,15 @@ class LEDShow(object):
     def setPixelColor(self, pixel, red, green, blue):
         """ Set specified LED to RGB value """
         if pixel < LEDShow.LED_COUNT:
+            red = utils.clamp(red, 0, 255)
+            green = utils.clamp(green, 0, 255)
+            blue = utils.clamp(blue, 0, 255)
             self.strip.setPixelColorRGB(pixel, green, red, blue)  #GRB to RGB
+
+
+    def getPixelColor(self, pixel):
+        """ Return RGB value of specified pixel """
+        return utils.intToRGB(self.strip.getPixelColor(pixel))
 
     
     def setPixelColorXY(self, x, y, red, green, blue):
@@ -147,6 +158,10 @@ class LEDShow(object):
         if column < len(self.grid):
             for y in range(len(self.grid[0])):
                 self.setPixelColorXY(column, y, red, green, blue)
+
+    def setGridColor(self, red, green, blue):
+        for i in range(self.numPixels()):
+            self.setPixelColor(i, red, green, blue)
 
 
     def show(self):

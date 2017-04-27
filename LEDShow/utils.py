@@ -25,6 +25,23 @@ def mapRange(num, min1, max1, min2, max2, clamp=True):
     return num2
 
 
+def clamp(num, min, max):
+    """
+    Constrain number to specified range
+    
+    Attributes:
+        num: The number to clamp
+        min: Minimum range value
+        max: Maximum range value     
+    """ 
+    if num < min:
+        num = min
+    elif num > max:
+        num = max
+    return num
+
+
+
 def stripToGrid(pixelCount, columnCount):
     """
     Converts neopixel linear strip positions to row/column grid coordinates (bottom left origin)
@@ -47,4 +64,20 @@ def stripToGrid(pixelCount, columnCount):
             pixel += 1            
 
     return grid
+
+
+def intToRGB(RGBInt):
+    """
+    Converts 24-bit RGB color value to RGB
+
+    Attributes:
+        RGBInt: Color value to convert
+    """
+    b = RGBInt & 255
+    r = (RGBInt >> 8) & 255
+    g = (RGBInt >> 16) & 255
+    return (r,g,b)
+
+
+
             
