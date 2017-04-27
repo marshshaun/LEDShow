@@ -39,9 +39,9 @@ class LEDShow(object):
         
         #list of animations to cycle through
         self.animations = [
-            AnimationWipe(), 
+            #AnimationWipe(), 
             AnimationGreen(), 
-            AnimationBlue()
+            #AnimationBlue()
             ]   
 
         #index of current animation
@@ -78,7 +78,6 @@ class LEDShow(object):
         #increment animation time
         self.animationTime += self.pingInterval
         self.startPingInterval = time.time()
-        print("distance: "+str(d)+" animation time:"+str(self.animationTime))  
         
         #only update animation when new distance is less than MAX_DISTANCE,
         #differs(within the ACCURACY range) from the previous,

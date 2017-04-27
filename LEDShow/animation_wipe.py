@@ -21,13 +21,13 @@ class AnimationWipe(Animation):
         for i in range(x):
            leds.setPixelColor(i, x, 24, 0)
            leds.show()
-           time.sleep(21/500.0)
+           time.sleep(42/1000)
 
         #top section
         for i in range(256-x):
            leds.setPixelColor(i+x, 0, 80, x*2)
            leds.show()
-           time.sleep(21/600.0)
+           time.sleep(35/1000.0)
 
         self._running = False
 
