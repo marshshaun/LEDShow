@@ -8,6 +8,7 @@ from animation_blue import AnimationBlue
 from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
 from animation_warmer import AnimationWarmer
+from animation_pulse import AnimationPulse
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -41,10 +42,11 @@ class LEDShow(object):
         
         #list of animations to cycle through
         self.animations = [
+            AnimationPulse()
             #AnimationWipe(), 
             #AnimationGreen(), 
             #AnimationBlue(),
-            AnimationWarmer()
+            #AnimationWarmer()
             ]   
 
         #index of current animation
