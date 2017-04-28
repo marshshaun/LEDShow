@@ -20,4 +20,8 @@ class Animation(object):
         """ The perferred freqeuncy of distance updates from the sensor """
         return 1
 
+    @abstractmethod
+    def pingLoop(self):
+        return False
+
     

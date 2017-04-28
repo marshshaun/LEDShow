@@ -107,6 +107,8 @@ class LEDShow(object):
         """ Returns True if the provided distance is within a certain number 
             of centimeters of the current distance. 
         """
+        if(self.currentAnimation.pingLoop()):
+            return False
         return d > self.distance - LEDShow.ACCURACY and d < self.distance + LEDShow.ACCURACY
 
 

@@ -38,3 +38,6 @@ class AnimationWipe(Animation):
     def pingInterval(self):
         """ The perferred freqeuncy of distance updates from the sensor """
         return 3
+
+    def pingLoop(self):
+        return False

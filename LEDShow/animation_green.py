@@ -21,6 +21,9 @@ class AnimationGreen(Animation):
     def pingInterval(self):
         return 1
 
+    def pingLoop(self):
+        return False
+
     def colorRow(self, leds, row):
         if(self.row == row):
             return

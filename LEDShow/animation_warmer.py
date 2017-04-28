@@ -22,6 +22,9 @@ class AnimationWarmer(Animation):
     def pingInterval(self):
         return 1
 
+    def pingLoop(self):
+        return False
+
     def animateToColor(self, leds, r, g, b, increment=4):
         """
         Linearly transitions from current color to target color

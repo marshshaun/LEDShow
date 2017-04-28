@@ -20,3 +20,6 @@ class AnimationBlue(Animation):
 
     def pingInterval(self):
         return 1
+
+    def pingLoop(self):
+        return False

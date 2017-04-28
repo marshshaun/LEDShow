@@ -10,7 +10,7 @@ class AnimationPulse(Animation):
     def run(self, leds):
         self._running = True
         self.leds = leds
-        self.pulseColor(0, 255, 233)
+        self.pulseColor(0, 255, 233, leds.distance)
         self._running = False
 
     def running(self):
@@ -19,19 +19,23 @@ class AnimationPulse(Animation):
     def pingInterval(self):
         return 1
 
-    def pulseColor(self, r, g, b):
+    def pingLoop(self):
+        return True
+
+    def pulseColor(self, r, g, b, distance):
         #center
         self.setColumns(3, 4, r, g, b, False)
+        
+        #on
+        self.setColumns(2, 5, r, g, b)
+        self.setColumns(1, 6, r, g, b)
+        self.setColumns(0, 7, r, g, b)
 
-        while True:
-            #on
-            self.setColumns(2, 5, r, g, b)
-            self.setColumns(1, 6, r, g, b)
-            self.setColumns(0, 7, r, g, b)
-
-            #off
-            self.setColumns(0, 7, 0, 0, 0)
+        #off
+        self.setColumns(0, 7, 0, 0, 0)
+        if distance > 120:
             self.setColumns(1, 6, 0, 0, 0)
+        if distance > 300:
             self.setColumns(2, 5, 0, 0, 0)
 
     def setColumns(self, column1, column2, r, g, b, animate=True):
