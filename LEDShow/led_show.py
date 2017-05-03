@@ -5,11 +5,11 @@ from neopixel import *
 import utils
 
 from animation_blue import AnimationBlue
-from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
 from animation_warmer import AnimationWarmer
 from animation_pulse import AnimationPulse
 from animation_mirror import AnimationMirror
+from animation_sunset import AnimationSunset
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -43,7 +43,8 @@ class LEDShow(object):
         
         #list of animations to cycle through
         self.animations = [
-            AnimationMirror()
+            AnimationSunset()
+            #AnimationMirror()
             #AnimationPulse()
             #AnimationWipe(), 
             #AnimationWarmer()
@@ -150,14 +151,23 @@ class LEDShow(object):
             self.setPixelColor(self.grid[x][y], red, green, blue)
 
 
+    def getPixelColorXY(self, x, y):
+        return self.getPixelColor(self.grid[x][y])
+
+
     def setRowColor(self, row, red, green, blue):
         """ Set entire a row to the provided color """
         if row < len(self.grid[0]):
             for x in range(len(self.grid)):
                 self.setPixelColorXY(x, row, red, green, blue)
 
+
     def getRowCount(self):
         return len(self.grid[0])
+
+
+    def getColumnCount(self):
+        return len(self.grid)
 
 
     def setColumnColor(self, column, red, green, blue):

@@ -25,6 +25,9 @@
     <Compile Include="animation_mirror.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="animation_sunset.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="animation_warmer.py">
       <SubType>Code</SubType>
     </Compile>
@@ -35,9 +38,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="animation_blue.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="animation_green.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="animation_wipe.py">
