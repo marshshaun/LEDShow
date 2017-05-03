@@ -9,6 +9,7 @@ from animation_green import AnimationGreen
 from animation_wipe import AnimationWipe
 from animation_warmer import AnimationWarmer
 from animation_pulse import AnimationPulse
+from animation_mirror import AnimationMirror
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -42,10 +43,9 @@ class LEDShow(object):
         
         #list of animations to cycle through
         self.animations = [
-            AnimationPulse()
+            AnimationMirror()
+            #AnimationPulse()
             #AnimationWipe(), 
-            #AnimationGreen(), 
-            #AnimationBlue(),
             #AnimationWarmer()
             ]   
 
@@ -156,6 +156,9 @@ class LEDShow(object):
             for x in range(len(self.grid)):
                 self.setPixelColorXY(x, row, red, green, blue)
 
+    def getRowCount(self):
+        return len(self.grid[0])
+
 
     def setColumnColor(self, column, red, green, blue):
         """ Set entire column to the provided color """
@@ -166,6 +169,11 @@ class LEDShow(object):
     def setGridColor(self, red, green, blue):
         for i in range(self.numPixels()):
             self.setPixelColor(i, red, green, blue)
+
+    def drawSquare(self, x, y, width, height, red, green, blue):
+        for w in range(width):
+            for h in range(height):
+                self.setPixelColorXY(x+w, y-h, red, green, blue)
 
 
     def show(self):
