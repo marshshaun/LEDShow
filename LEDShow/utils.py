@@ -78,6 +78,6 @@ def intToRGB(RGBInt):
     g = (RGBInt >> 16) & 255
     return (r,g,b)
 
-
-
+def colorsAreEqual(color1, color2):
+    return color1[0] == color2[0] and color1[1] == color2[1] and color1[2] == color2[2]
             
