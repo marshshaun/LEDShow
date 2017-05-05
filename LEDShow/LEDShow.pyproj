@@ -37,9 +37,6 @@
     <Compile Include="_animation.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="animation_blue.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="animation_wipe.py">
       <SubType>Code</SubType>
     </Compile>

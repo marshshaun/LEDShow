@@ -35,6 +35,9 @@ class AnimationWipe(Animation):
         """ Returns the running state of the animation """
         return self._running
 
+    def stop(self):
+        self._running = False
+
     def pingInterval(self):
         """ The perferred freqeuncy of distance updates from the sensor """
         return 3

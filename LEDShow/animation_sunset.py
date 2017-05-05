@@ -24,6 +24,11 @@ class AnimationSunset(Animation):
        self.sun(leds)
        self.sky(leds)
        self._running = False
+
+    def stop(self):
+        self.sunState = -1
+        self.skyState = -1
+        self._running = False
        
     def running(self):
         return self._running             

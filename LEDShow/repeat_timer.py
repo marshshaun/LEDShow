@@ -15,6 +15,9 @@ class RepeatTimer(object):
  
     def stop(self):
         self.stopEvent.set()
+
+    def setInterval(self, interval):
+        self.interval = interval
  
     class TimerThread(Thread):
         def __init__(self, timer):

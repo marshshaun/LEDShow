@@ -11,6 +11,10 @@ class Animation(object):
         pass
 
     @abstractmethod
+    def stop(self):
+        pass
+
+    @abstractmethod
     def running():
         """ Returns the running state of the animation """
         return False

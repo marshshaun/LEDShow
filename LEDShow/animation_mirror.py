@@ -18,6 +18,10 @@ class AnimationMirror(Animation):
        self.max = leds.getRowCount() - 2
        self.squares(leds)
        self._running = False
+
+    def stop(self):
+        self.y1 = -1
+        self._running = False
        
     def running(self):
         return self._running             

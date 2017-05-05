@@ -3,8 +3,8 @@ from ping_sensor import PingSensor
 import RPi.GPIO as GPIO
 from neopixel import *
 import utils
+from repeat_timer import RepeatTimer
 
-from animation_blue import AnimationBlue
 from animation_wipe import AnimationWipe
 from animation_warmer import AnimationWarmer
 from animation_pulse import AnimationPulse
@@ -23,7 +23,7 @@ class LEDShow(object):
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
-    ANIMATION_DURATION = 30     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
+    ANIMATION_DURATION = 10     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
     MAX_DISTANCE = 350          # The maximum distance accepted from the ultrasonic sensor (cm)
     ACCURACY = 5                # The difference in distance between readings needs to be greater than this value to trigger an update.
 
@@ -43,19 +43,24 @@ class LEDShow(object):
         
         #list of animations to cycle through
         self.animations = [
-            AnimationSunset()
-            #AnimationMirror()
-            #AnimationPulse()
-            #AnimationWipe(), 
-            #AnimationWarmer()
+            AnimationWipe(),
+            AnimationPulse(),
+            AnimationSunset(), 
+            AnimationMirror(), 
+            AnimationWarmer()
             ]   
 
         #index of current animation
-        self.animationIndex = 0       
+        self.animationIndex = 0     
+        
+        #animation duration timer
+        if len(self.animations) > 1:  
+            self.timer = RepeatTimer()
+            self.timer.start(LEDShow.ANIMATION_DURATION, self.nextAnimation)
 
         #initialize animations
+        self.currentAnimation = None
         self.nextAnimation()
-        self.pingInterval = self.currentAnimation.pingInterval()
         self.startPingInterval = time.time()
 
         #ping loop
@@ -74,7 +79,6 @@ class LEDShow(object):
             GPIO.cleanup()
             self.clearPixels()
 
-
     def setDistance(self, d):
         """ The sensor callback evaluates the reported distance then sends it to the current
             animation when a change is detected. Also queues the next animation when the 
@@ -82,7 +86,6 @@ class LEDShow(object):
         """
 
         #increment animation time
-        self.animationTime += self.pingInterval
         self.startPingInterval = time.time()
         
         #only update animation when new distance is less than MAX_DISTANCE,
@@ -94,14 +97,6 @@ class LEDShow(object):
            and not self.currentAnimation.running()):
             self.distance = distance
             self.currentAnimation.run(self)
-
-        #bypass cycling if less than 2 animations
-        if(len(self.animations) < 2):
-            return
-
-        #trigger next animation
-        if(self.animationTime >= LEDShow.ANIMATION_DURATION):
-            self.nextAnimation()
 
 
     def withinAccuracyRange(self, d):
@@ -117,11 +112,15 @@ class LEDShow(object):
         """ Queues the next animation in the list and updates the sensor interval.
             If the current animation is at the end of the list, the sequence starts over.
         """
+        if not self.currentAnimation == None:
+            self.currentAnimation.stop()
+
         self.currentAnimation = self.animations[self.animationIndex]
+        print(self.currentAnimation)
+
         self.animationIndex = 0 if (self.animationIndex == len(self.animations)-1) else (self.animationIndex + 1)
-        self.animationTime = 0
         self.distance = 0
-        self.pingInterval = self.currentAnimation.pingInterval()        
+        self.pingInterval = self.currentAnimation.pingInterval()     
 
 
     def clearPixels(self):

@@ -16,6 +16,9 @@ class AnimationPulse(Animation):
     def running(self):
         return self._running
 
+    def stop(self):
+        self._running = False
+
     def pingInterval(self):
         return 1
 
