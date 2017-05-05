@@ -1,4 +1,4 @@
-
+from random import randint
 
 def mapRange(num, min1, max1, min2, max2, clamp=True):
     """
@@ -80,4 +80,7 @@ def intToRGB(RGBInt):
 
 def colorsAreEqual(color1, color2):
     return color1[0] == color2[0] and color1[1] == color2[1] and color1[2] == color2[2]
+
+def randomColor():
+    return (randint(0,255), randint(0,255), randint(0,255))
             
