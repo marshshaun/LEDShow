@@ -1,5 +1,7 @@
 from _animation import Animation
 import time
+from random import randint
+import utils
 
 class AnimationPulse(Animation):
     """PLACEHOLDER ANIMATION"""
@@ -10,7 +12,35 @@ class AnimationPulse(Animation):
     def run(self, leds):
         self._running = True
         self.leds = leds
-        self.pulseColor(0, 255, 233, leds.distance)
+        #self.pulseColor(0, 255, 233, leds.distance)
+        
+        count = 0
+        speed = 2
+        """
+        *Experiment with drawing multiple at the same time
+        *Fade in squares
+        """
+        while True: 
+            x = randint(0, 7)
+            y = randint(0, leds.getRowCount()-1)
+            val = randint(1,speed)
+            c = (0, randint(0,255), randint(0,255))
+
+            for i in range(val):
+                leds.drawSquare(x, y, i, i, c[0], c[1], c[2])
+                leds.show() 
+
+            count += 1
+            if count == 500:
+                leds.setGridColor(0,0,0)
+                leds.show()
+                count = 0
+                speed -= 1
+                print("speed: "+str(speed))
+                if speed < 1:
+                    speed = 2
+                               
+
         self._running = False
 
     def running(self):

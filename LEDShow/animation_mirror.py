@@ -2,19 +2,28 @@ from _animation import Animation
 import time
 import utils
 
+"""
+*Add ping interrupt
+*Slow background crossfade every set interval 20s or so
+"""
 class AnimationMirror(Animation):
     """PLACEHOLDER ANIMATION"""
 
     def __init__(self):
-        self.background = (0, 0, 0)
-        self.color1 = (0, 255, 0)
-        self.color2 = (255, 0, 255)
+        self.background = utils.randomColor()
+        self.color1 = utils.randomColor()
+        self.color2 = utils.randomColor()
         self.y1 = -1
         self.min = 6.0
         self._running = False
+        self.count = 0
 
     def run(self, leds):
-       self._running = True
+       self._running = False  
+       self.count += 1
+       if self.count == 5:
+           self.count = 0
+           self.y1 = -1     
        self.max = leds.getRowCount() - 2
        self.squares(leds)
        self._running = False
@@ -38,9 +47,10 @@ class AnimationMirror(Animation):
             return
         if(self.y1 == -1):
             self.y1 = y
+            self.background = utils.randomColor()
             leds.setGridColor(self.background[0], self.background[1], self.background[2])      
-            self.drawSquare(leds, 1, self.y1, self.color1)    
-            self.drawSquare(leds, 1, self.mirror(self.y1), self.color2)                                    
+            self.drawSquare(leds, 0, self.y1, self.color1)    
+            self.drawSquare(leds, 0, self.mirror(self.y1), self.color2)                                    
             leds.show()
         else:
             direction = 1 if y > self.y1 else -1
@@ -57,11 +67,11 @@ class AnimationMirror(Animation):
         return int(self.max - (y - self.min))
 
     def drawSquare(self, leds, x, y, c):
-        for w in range(6):
-            for h in range(6):
+        for w in range(8):
+            for h in range(20):
                 leds.setPixelColorXY(x+w, y-h, c[0], c[1], c[2])                                 
 
     def clearSquare(self, leds, x, y):
-        for w in range(6):
-            for h in range(6):
+        for w in range(8):
+            for h in range(20):
                 leds.setPixelColorXY(x+w, y-h, self.background[0], self.background[1], self.background[2])

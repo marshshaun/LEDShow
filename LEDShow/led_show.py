@@ -44,10 +44,10 @@ class LEDShow(object):
         
         #list of animations to cycle through
         self.animations = [
-            AnimationLeap(),
+            #AnimationLeap(),
             #AnimationWipe(),
-            #AnimationPulse(),
-            #AnimationSunset(), 
+            #nPulse(),
+            AnimationSunset(), 
             #AnimationMirror(), 
             #AnimationWarmer()
             ]   
@@ -94,8 +94,8 @@ class LEDShow(object):
         #differs(within the ACCURACY range) from the previous,
         #and the animation is inactive (not currently running)
         distance = int(d)
-        if(distance < LEDShow.MAX_DISTANCE 
-           and not self.withinAccuracyRange(distance)
+        if(distance < LEDShow.MAX_DISTANCE       
+           and not self.withinAccuracyRange(distance)     
            and not self.currentAnimation.running()):
             self.distance = distance
             self.currentAnimation.run(self)

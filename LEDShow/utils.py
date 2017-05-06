@@ -83,4 +83,7 @@ def colorsAreEqual(color1, color2):
 
 def randomColor():
     return (randint(0,255), randint(0,255), randint(0,255))
+
+def withinAccuracyRange(oldDistance, newDistance):
+    return newDistance > oldDistance - 5 and newDistance < oldDistance + 5
             
