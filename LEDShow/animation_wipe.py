@@ -12,10 +12,10 @@ class AnimationWipe(Animation):
     def run(self, leds):      
 
         """ Maps color range to distance and applies results to bisected strip """
-        self._running = True
+        self._running = False
 
         #color range
-        x = int(utils.mapRange(leds.distance, 1.0, 350, 0.0, 255.0))
+        x = int(utils.mapRange(leds.distance, 1.0, 350, 0.0, leds.numPixels()-1))
 
         #bottom section
         for i in range(x):

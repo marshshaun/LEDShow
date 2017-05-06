@@ -21,7 +21,7 @@ class AnimationSunset(Animation):
     def run(self, leds):
        self._running = True
        self.max = leds.getRowCount() - 2
-       self.sun(leds)
+       #self.sun(leds)
        self.sky(leds)
        self._running = False
 
@@ -54,7 +54,7 @@ class AnimationSunset(Animation):
             if not utils.colorsAreEqual((255,255,255), leds.getPixelColor(i)):
                 leds.setPixelColor(i, c[0], c[1], c[2])
                 leds.show()
-                time.sleep(.002)
+               # time.sleep(.002)
 
     def sun(self, leds):
         y = int(utils.mapRange(leds.distance, 80.0, 312.0, self.max, self.min))
