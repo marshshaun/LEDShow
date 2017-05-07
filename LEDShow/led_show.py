@@ -16,7 +16,7 @@ class LEDShow(object):
     LED_PIN        = 18         # GPIO pin connected to the pixels (must support PWM!).
     LED_FREQ_HZ    = 800000     # LED signal frequency in hertz (usually 800khz)
     LED_DMA        = 5          # DMA channel to use for generating signal (try 5)
-    LED_BRIGHTNESS = 100         # Set to 0 for darkest and 255 for brightest
+    LED_BRIGHTNESS = 130        # Set to 0 for darkest and 255 for brightest
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
@@ -41,8 +41,8 @@ class LEDShow(object):
         ###SHUFFLE THESE!!!
         #list of animations to cycle through
         self.animations = [
-            #AnimationWipe(),
-            AnimationPulse()
+            #AnimationWipe(self),
+            AnimationPulse(self)
             ]   
 
         #index of current animation
@@ -89,7 +89,7 @@ class LEDShow(object):
         if(distance < LEDShow.MAX_DISTANCE
            and not self.currentAnimation == None):
             self.distance = distance
-            self.currentAnimation.run(self)
+            self.currentAnimation.run()
 
     def nextAnimation(self):
         """ Queues the next animation in the list and updates the sensor interval.
@@ -177,7 +177,11 @@ class LEDShow(object):
         return self.strip.numPixels()
 
     def setBrightness(self, brightness):
+        LEDShow.LED_BRIGHTNESS = brightness
         self.strip.setBrightness(brightness)
+
+    def getBrightness(self):
+        return LEDShow.LED_BRIGHTNESS
 
 
 

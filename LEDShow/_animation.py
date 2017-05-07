@@ -5,14 +5,17 @@ class Animation(object):
         
     __metaclass__ = ABCMeta
 
+    def __init__(self, leds):
+        pass
+
     @abstractmethod
-    def run(self, leds):
+    def run(self):
         """ Executes animations on the provided *leds* instance """
         pass
 
     @abstractmethod
-    def reset(self):
-        """ Restore initial state """
+    def stop(self):
+        """ Stop and reset animation """
         pass
 
     @abstractmethod
