@@ -11,6 +11,7 @@ from animation_pulse import AnimationPulse
 from animation_mirror import AnimationMirror
 from animation_sunset import AnimationSunset
 from animation_leap import AnimationLeap
+from animation_fade import AnimationFade
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -20,7 +21,7 @@ class LEDShow(object):
     LED_PIN        = 18         # GPIO pin connected to the pixels (must support PWM!).
     LED_FREQ_HZ    = 800000     # LED signal frequency in hertz (usually 800khz)
     LED_DMA        = 5          # DMA channel to use for generating signal (try 5)
-    LED_BRIGHTNESS = 10         # Set to 0 for darkest and 255 for brightest
+    LED_BRIGHTNESS = 100         # Set to 0 for darkest and 255 for brightest
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
@@ -42,14 +43,16 @@ class LEDShow(object):
         #grid conversion
         self.grid = utils.stripToGrid(LEDShow.LED_COUNT, 8)
         
+        ###SHUFFLE THESE!!!
         #list of animations to cycle through
         self.animations = [
             #AnimationLeap(),
             #AnimationWipe(),
-            #nPulse(),
-            AnimationSunset(), 
-            #AnimationMirror(), 
+            #AnimationPulse(),
+            #AnimationSunset(), 
+            AnimationMirror(),   #make squares change with background also
             #AnimationWarmer()
+            #AnimationFade()
             ]   
 
         #index of current animation
@@ -191,8 +194,12 @@ class LEDShow(object):
         """ Refresh LEDs """
         self.strip.show()
 
-
     def numPixels(self):
         """ The strips LED count """
         return self.strip.numPixels()
+
+    def setBrightness(self, brightness):
+        self.strip.setBrightness(brightness)
+
+
 

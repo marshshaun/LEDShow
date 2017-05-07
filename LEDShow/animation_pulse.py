@@ -14,6 +14,7 @@ class AnimationPulse(Animation):
         self.leds = leds
         #self.pulseColor(0, 255, 233, leds.distance)
         
+        leds.setBrightness(150)
         count = 0
         speed = 2
         """
@@ -35,11 +36,7 @@ class AnimationPulse(Animation):
                 leds.setGridColor(0,0,0)
                 leds.show()
                 count = 0
-                speed -= 1
-                print("speed: "+str(speed))
-                if speed < 1:
-                    speed = 2
-                               
+                              
 
         self._running = False
 
