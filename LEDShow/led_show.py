@@ -6,6 +6,7 @@ import utils
 from repeat_timer import RepeatTimer
 
 from animation_wipe import AnimationWipe
+from animation_pulse import AnimationPulse
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -40,7 +41,8 @@ class LEDShow(object):
         ###SHUFFLE THESE!!!
         #list of animations to cycle through
         self.animations = [
-            AnimationWipe(),
+            #AnimationWipe(),
+            AnimationPulse()
             ]   
 
         #index of current animation

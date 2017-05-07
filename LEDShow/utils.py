@@ -1,4 +1,5 @@
 from random import randint
+import time
 
 def mapRange(num, min1, max1, min2, max2, clamp=True):
     """
@@ -86,4 +87,27 @@ def randomColor():
 
 def withinAccuracyRange(oldDistance, newDistance, range = 5):
     return newDistance > oldDistance - range and newDistance < oldDistance + range
+
+def crossFade(fromColor, toColor, steps=20, onStep=None):
+
+    fRed = fromColor[0]
+    fGreen = fromColor[1]
+    fBlue = fromColor[2]
+
+    tRed = toColor[0]
+    tGreen = toColor[1]
+    tBlue = toColor[2]
+
+    stepRed = (float(tRed) - float(fRed)) / steps
+    stepGreen = (float(tGreen) - float(fGreen)) / steps
+    stepBlue = (float(tBlue) - float(fBlue)) / steps
+
+    for i in range(steps):
+        fRed += stepRed
+        fGreen += stepGreen
+        fBlue += stepBlue
+
+        if not onStep == None:
+            onStep((int(fRed), int(fGreen), int(fBlue)))
+
             
