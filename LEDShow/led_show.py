@@ -6,12 +6,6 @@ import utils
 from repeat_timer import RepeatTimer
 
 from animation_wipe import AnimationWipe
-from animation_warmer import AnimationWarmer
-from animation_pulse import AnimationPulse
-from animation_mirror import AnimationMirror
-from animation_sunset import AnimationSunset
-from animation_leap import AnimationLeap
-from animation_fade import AnimationFade
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -46,13 +40,7 @@ class LEDShow(object):
         ###SHUFFLE THESE!!!
         #list of animations to cycle through
         self.animations = [
-            #AnimationLeap(),
-            #AnimationWipe(),
-            #AnimationPulse(),
-            #AnimationSunset(), 
-            AnimationMirror(),   #make squares change with background also
-            #AnimationWarmer()
-            #AnimationFade()
+            AnimationWipe(),
             ]   
 
         #index of current animation
@@ -93,25 +81,13 @@ class LEDShow(object):
         #increment animation time
         self.startPingInterval = time.time()
         
-        #only update animation when new distance is less than MAX_DISTANCE,
-        #differs(within the ACCURACY range) from the previous,
-        #and the animation is inactive (not currently running)
+        #only update animation when new distance is less than MAX_DISTANCE
+        #and current animation is valid
         distance = int(d)
-        if(distance < LEDShow.MAX_DISTANCE       
-           and not self.withinAccuracyRange(distance)     
-           and not self.currentAnimation.running()):
+        if(distance < LEDShow.MAX_DISTANCE
+           and not self.currentAnimation == None):
             self.distance = distance
             self.currentAnimation.run(self)
-
-
-    def withinAccuracyRange(self, d):
-        """ Returns True if the provided distance is within a certain number 
-            of centimeters of the current distance. 
-        """
-        if(self.currentAnimation.pingLoop()):
-            return False
-        return d > self.distance - LEDShow.ACCURACY and d < self.distance + LEDShow.ACCURACY
-
 
     def nextAnimation(self):
         """ Queues the next animation in the list and updates the sensor interval.

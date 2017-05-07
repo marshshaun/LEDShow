@@ -22,16 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="animation_fade.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="animation_mirror.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="animation_sunset.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="animation_warmer.py">
+    <Compile Include="repeat_timer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="utils.py">

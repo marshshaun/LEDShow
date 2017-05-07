@@ -11,13 +11,9 @@ class Animation(object):
         pass
 
     @abstractmethod
-    def stop(self):
+    def reset(self):
+        """ Restore initial state """
         pass
-
-    @abstractmethod
-    def running():
-        """ Returns the running state of the animation """
-        return False
 
     @abstractmethod
     def pingInterval(self):
@@ -25,7 +21,9 @@ class Animation(object):
         return 1
 
     @abstractmethod
-    def pingLoop(self):
+    def waitForPing(self):
+        """ Intended to trigger just before ping to allow interruption of animation loops 
+        so they aren't locking the main thread """
         return False
 
     
