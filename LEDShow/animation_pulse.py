@@ -1,16 +1,15 @@
 from _animation import Animation
 import time
 import utils
+from random import randint
 
 class AnimationPulse(Animation):
 
     def __init__(self, leds):
         self.leds = leds
         self.distance = 0
-
-        #temp
-        leds.setGridColor(0,0,255)
-        leds.show()
+        self.pingCount = 0
+        self.blue = self.randomBlue()
 
     def run(self):    
         
@@ -22,12 +21,19 @@ class AnimationPulse(Animation):
             self.steps = int(utils.mapRange(self.distance, 80.0, 312.0, 10, 30))
             self.hold = int(utils.mapRange(self.distance, 80.0, 312.0, 0, 0.2))            
 
+        #switch to random blue color on every 4th ping
+        if self.pingCount % 4 == 0:
+            self.blue = self.randomBlue()
+        self.pingCount += 1
+
+        #run pulse animation
         self.pulse()
 
     def pulse(self):
         b = self.leds.getBrightness()
         utils.transitionBrightness(b, 0, self.fade, self.steps)
         time.sleep(self.hold)
+        self.leds.setGridColor(self.blue[0], self.blue[1], self.blue[2])
         utils.transitionBrightness(0, 130, self.fade, self.steps)
         time.sleep(self.hold)
 
@@ -36,17 +42,19 @@ class AnimationPulse(Animation):
         self.leds.setBrightness(brightness)
         self.leds.show()
 
+
+    def randomBlue(self):
+        return (randint(0, 5), randint(0, 200), randint(20,255))
+
     def stop(self):
         self._stop = True
         self.distance = 0
+        self.pingCount = 0
         self.leds.setBrightness(130)
 
     def pingInterval(self):
         return 1
 
     def waitForPing(self):
-        if self._stop:
-            return True
-        elapsed = time.time() - self.startTime
-        return elapsed >= self.pingInterval() - 0.05
+        pass
     
