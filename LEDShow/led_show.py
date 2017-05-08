@@ -8,6 +8,7 @@ from repeat_timer import RepeatTimer
 from animation_wipe import AnimationWipe
 from animation_pulse import AnimationPulse
 from animation_leap import AnimationLeap
+from animation_mirror import AnimationMirror
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -17,11 +18,12 @@ class LEDShow(object):
     LED_PIN        = 18         # GPIO pin connected to the pixels (must support PWM!).
     LED_FREQ_HZ    = 800000     # LED signal frequency in hertz (usually 800khz)
     LED_DMA        = 5          # DMA channel to use for generating signal (try 5)
-    LED_BRIGHTNESS = 10        # Set to 0 for darkest and 255 for brightest
+    LED_BRIGHTNESS = 100        # Set to 0 for darkest and 255 for brightest
+    LED_MAX_BRIGHTNESS = 130    # Constrain the brightness level to his value
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
-    ANIMATION_DURATION = 10     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
+    ANIMATION_DURATION = 30     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
     MAX_DISTANCE = 350          # The maximum distance accepted from the ultrasonic sensor (cm)
 
 
@@ -43,7 +45,8 @@ class LEDShow(object):
         self.animations = [
             #AnimationWipe(self),
             #AnimationPulse(self),
-            AnimationLeap(self)
+            #AnimationLeap(self),
+            AnimationMirror(self)
             ]   
 
         #index of current animation
@@ -178,8 +181,8 @@ class LEDShow(object):
         return self.strip.numPixels()
 
     def setBrightness(self, brightness):
-        LEDShow.LED_BRIGHTNESS = brightness
-        self.strip.setBrightness(brightness)
+        LEDShow.LED_BRIGHTNESS = brightness if brightness < LEDShow.LED_MAX_BRIGHTNESS else LEDShow.LED_MAX_BRIGHTNESS
+        self.strip.setBrightness(LEDShow.LED_BRIGHTNESS)
 
     def getBrightness(self):
         return LEDShow.LED_BRIGHTNESS
