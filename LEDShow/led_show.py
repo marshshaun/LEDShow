@@ -4,17 +4,19 @@ import RPi.GPIO as GPIO
 from neopixel import *
 import utils
 from repeat_timer import RepeatTimer
+from random import randint
 
 from animation_wipe import AnimationWipe
 from animation_pulse import AnimationPulse
 from animation_leap import AnimationLeap
 from animation_mirror import AnimationMirror
+from animation_duel import AnimationDuel
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
 
     # LED strip configuration:
-    LED_COUNT      = 256        # Number of LED pixels.
+    LED_COUNT      = 1536        # Number of LED pixels.
     LED_PIN        = 18         # GPIO pin connected to the pixels (must support PWM!).
     LED_FREQ_HZ    = 800000     # LED signal frequency in hertz (usually 800khz)
     LED_DMA        = 5          # DMA channel to use for generating signal (try 5)
@@ -23,8 +25,9 @@ class LEDShow(object):
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
-    ANIMATION_DURATION = 10     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
-    MAX_DISTANCE = 350          # The maximum distance accepted from the ultrasonic sensor (cm)
+    ANIMATION_DURATION = 300     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
+    MAX_DISTANCE = 350           # The maximum distance accepted from the ultrasonic sensor (cm)
+    RANDOMIZE = True             # Next animation is selected randomly
 
 
     def __init__(self):
@@ -45,8 +48,9 @@ class LEDShow(object):
         self.animations = [
             AnimationWipe(self),
             AnimationPulse(self),
-            AnimationLeap(self),
-            AnimationMirror(self)
+            AnimationLeap(self),                        
+            AnimationMirror(self), 
+            AnimationDuel(self)
             ]   
 
         #index of current animation
@@ -105,7 +109,15 @@ class LEDShow(object):
         self.currentAnimation = self.animations[self.animationIndex]
         print(self.currentAnimation)
 
-        self.animationIndex = 0 if (self.animationIndex == len(self.animations)-1) else (self.animationIndex + 1)
+        #next index
+        if LEDShow.RANDOMIZE:
+            index = self.animationIndex
+            while index == self.animationIndex:
+                index = randint(0, len(self.animations)-1)
+            self.animationIndex = index
+        else:
+            self.animationIndex = 0 if (self.animationIndex == len(self.animations)-1) else (self.animationIndex + 1)
+
         self.distance = 0
         self.pingInterval = self.currentAnimation.pingInterval()     
 
