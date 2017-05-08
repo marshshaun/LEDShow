@@ -19,10 +19,10 @@ class AnimationLeap(Animation):
 
         self.background = (0,0,0)
 
-
     def run(self):
 
         self._stop = False
+        self.leds.setBrightness(50)
 
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
@@ -57,14 +57,20 @@ class AnimationLeap(Animation):
         self.rows = []
         self.row = -1
         self.randomizeColors()
+
         for i in range(self.sections):
             self.row += self.interval
             self.rows.append(self.row)
 
             fromColor = self.leds.getPixelColorXY(0, self.row)
-            utils.crossFade(fromColor, self.colors[i], self.fade)  
+            utils.crossFade(fromColor, self.colors[i], self.fade, 0)          
 
-        self.leds.show()
+        #fade remaining to black
+        self.excess = []
+        for i in range(self.rows[self.sections-1]+1, self.leds.getRowCount()):
+            self.excess.append(i)
+            fromColor = self.leds.getPixelColorXY(0, i)
+            utils.crossFade(fromColor, self.background, self.fade, 1)
     
     def randomizeColors(self):
         self.colors = [
@@ -124,7 +130,11 @@ class AnimationLeap(Animation):
         self.colors[b] = tmp
 
 
-    def fade(self, color):
-        self.drawSquare(0, self.row, color)
+    def fade(self, color, context):
+        if context == 0:
+            self.drawSquare(0, self.row, color)
+        else:
+            for i in range(len(self.excess)):
+                self.leds.setRowColor(self.excess[i], color[0], color[1], color[2])
         self.leds.show()
     

@@ -15,6 +15,7 @@ class AnimationWipe(Animation):
         """ Maps color range to distance and applies results to bisected strip """
 
         self._stop = False
+        self.leds.setBrightness(30)
         
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):

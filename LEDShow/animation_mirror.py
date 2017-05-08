@@ -16,6 +16,7 @@ class AnimationMirror(Animation):
 
     def run(self):
        self._stop = False
+       self.leds.setBrightness(50)
 
         #distance change
        if not utils.withinAccuracyRange(self.distance, self.leds.distance):

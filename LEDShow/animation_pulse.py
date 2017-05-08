@@ -34,7 +34,7 @@ class AnimationPulse(Animation):
         utils.transitionBrightness(b, 0, self.fade, self.steps)
         time.sleep(self.hold)
         self.leds.setGridColor(self.blue[0], self.blue[1], self.blue[2])
-        utils.transitionBrightness(0, 130, self.fade, self.steps)
+        utils.transitionBrightness(0, 100, self.fade, self.steps)
         time.sleep(self.hold)
 
             
@@ -50,7 +50,6 @@ class AnimationPulse(Animation):
         self._stop = True
         self.distance = 0
         self.pingCount = 0
-        self.leds.setBrightness(130)
 
     def pingInterval(self):
         return 1
