@@ -25,6 +25,9 @@
     <Compile Include="animation_leap.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="animation_mirror.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="animation_pulse.py">
       <SubType>Code</SubType>
     </Compile>

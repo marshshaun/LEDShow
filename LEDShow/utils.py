@@ -88,7 +88,7 @@ def randomColor():
 def withinAccuracyRange(oldDistance, newDistance, range = 5):
     return newDistance > oldDistance - range and newDistance < oldDistance + range
 
-def crossFade(fromColor, toColor, onStep, steps=20):
+def crossFade(fromColor, toColor, onStep, context = None, steps=20):
 
     fRed = fromColor[0]
     fGreen = fromColor[1]
@@ -108,7 +108,7 @@ def crossFade(fromColor, toColor, onStep, steps=20):
         fBlue += stepBlue
 
         if not onStep == None:
-            onStep((int(fRed), int(fGreen), int(fBlue)))
+            onStep((int(fRed), int(fGreen), int(fBlue)), context)
 
 def transitionBrightness(fromBrightness, toBrightness, onStep, steps=10):
     step = (float(toBrightness) - float(fromBrightness)) / steps

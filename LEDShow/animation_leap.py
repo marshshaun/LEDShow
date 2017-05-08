@@ -112,7 +112,7 @@ class AnimationLeap(Animation):
         self.row = r2 
         fromColor = self.leds.getPixelColorXY(0, self.row)
         toColor = self.colors[b]          
-        utils.crossFade(fromColor, toColor, self.fade, 20)
+        utils.crossFade(fromColor, toColor, self.fade)
 
         for j in range(r2, r1, -direction):
             self.clearSquare(0, r2, self.colors[a])
