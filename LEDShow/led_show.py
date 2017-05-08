@@ -41,7 +41,7 @@ class LEDShow(object):
         ###SHUFFLE THESE!!!
         #list of animations to cycle through
         self.animations = [
-            #AnimationWipe(self),
+            AnimationWipe(self),
             AnimationPulse(self)
             ]   
 
