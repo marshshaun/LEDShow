@@ -13,7 +13,9 @@ class AnimationPulse(Animation):
 
     def run(self):    
         
-        self._stop = False          
+        self._stop = False  
+        self.originalBrightness = self.leds.getBrightness()
+        self.leds.setBrightness(100)        
 
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
@@ -50,6 +52,7 @@ class AnimationPulse(Animation):
         self._stop = True
         self.distance = 0
         self.pingCount = 0
+        self.leds.setBrightness(self.originalBrightness)
 
     def pingInterval(self):
         return 1

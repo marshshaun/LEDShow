@@ -53,7 +53,7 @@ class AnimationDuel(Animation):
     def startAnimation(self):
         c1 = self.colors[0]
         c2 = self.colors[1]
-        self.leds.setBrightness(10)
+
         for i in range(self.pixels/2 + 1):
             self.leds.setPixelColor(i, c1[0], c1[1], c1[2])
             self.leds.setPixelColor(self.pixels-i, c2[0], c2[1], c2[2])

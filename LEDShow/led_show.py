@@ -16,16 +16,15 @@ class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
 
     # LED strip configuration:
-    LED_COUNT      = 1536        # Number of LED pixels.
+    LED_COUNT      = 256        # Number of LED pixels.
     LED_PIN        = 18         # GPIO pin connected to the pixels (must support PWM!).
     LED_FREQ_HZ    = 800000     # LED signal frequency in hertz (usually 800khz)
     LED_DMA        = 5          # DMA channel to use for generating signal (try 5)
     LED_BRIGHTNESS = 10         # Set to 0 for darkest and 255 for brightest
-    LED_MAX_BRIGHTNESS = 100    # Constrain the brightness level to his value
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
-    ANIMATION_DURATION = 300     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
+    ANIMATION_DURATION = 30     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
     MAX_DISTANCE = 350           # The maximum distance accepted from the ultrasonic sensor (cm)
     RANDOMIZE = True             # Next animation is selected randomly
 
@@ -47,14 +46,14 @@ class LEDShow(object):
         #list of animations to cycle through
         self.animations = [
             AnimationWipe(self),
-            AnimationPulse(self),
-            AnimationLeap(self),                        
-            AnimationMirror(self), 
-            AnimationDuel(self)
+            #AnimationPulse(self),
+            #AnimationLeap(self),                        
+            #AnimationMirror(self), 
+            #AnimationDuel(self)
             ]   
 
-        #index of current animation
-        self.animationIndex = 0     
+        #initialized animation index
+        self.animationIndex = -1     
         
         #animation duration timer
         if len(self.animations) > 1:  
@@ -103,12 +102,6 @@ class LEDShow(object):
         """ Queues the next animation in the list and updates the sensor interval.
             If the current animation is at the end of the list, the sequence starts over.
         """
-        if not self.currentAnimation == None:
-            self.currentAnimation.stop()
-
-        self.currentAnimation = self.animations[self.animationIndex]
-        print(self.currentAnimation)
-
         #next index
         if LEDShow.RANDOMIZE:
             index = self.animationIndex
@@ -117,6 +110,12 @@ class LEDShow(object):
             self.animationIndex = index
         else:
             self.animationIndex = 0 if (self.animationIndex == len(self.animations)-1) else (self.animationIndex + 1)
+
+        if not self.currentAnimation == None:
+            self.currentAnimation.stop()
+
+        self.currentAnimation = self.animations[self.animationIndex]
+        print(self.currentAnimation)
 
         self.distance = 0
         self.pingInterval = self.currentAnimation.pingInterval()     
@@ -193,7 +192,7 @@ class LEDShow(object):
         return self.strip.numPixels()
 
     def setBrightness(self, brightness):
-        LEDShow.LED_BRIGHTNESS = brightness if brightness < LEDShow.LED_MAX_BRIGHTNESS else LEDShow.LED_MAX_BRIGHTNESS
+        LEDShow.LED_BRIGHTNESS = brightness 
         self.strip.setBrightness(LEDShow.LED_BRIGHTNESS)
 
     def getBrightness(self):

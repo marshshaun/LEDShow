@@ -22,7 +22,6 @@ class AnimationLeap(Animation):
     def run(self):
 
         self._stop = False
-        self.leds.setBrightness(50)
 
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
@@ -133,7 +132,7 @@ class AnimationLeap(Animation):
     def fade(self, color, context):
         if context == 0:
             self.drawSquare(0, self.row, color)
-        else:
+        elif context == 1:
             for i in range(len(self.excess)):
                 self.leds.setRowColor(self.excess[i], color[0], color[1], color[2])
         self.leds.show()
