@@ -22,7 +22,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="animation_random.py">
+    <Compile Include="animation_squares.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="animation_wave.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="animation_duel.py">
