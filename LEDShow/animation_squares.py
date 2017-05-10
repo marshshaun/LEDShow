@@ -1,7 +1,7 @@
 from _animation import Animation
 import time
 import utils
-import math
+from random import randint
 
 class AnimationSquares(Animation):
     """ A bottom-to-top wiping animation that dynamically changeds colors based on sensor distance """
@@ -10,6 +10,7 @@ class AnimationSquares(Animation):
         """ Initializes running state """
         self.leds = leds
         self.distance = 0
+        self.pingCount = 0
 
     def run(self):      
 
@@ -20,22 +21,28 @@ class AnimationSquares(Animation):
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
             self.distance = self.leds.distance
+            self.count = int(utils.mapRange(self.distance, 80.0, 312.0, 30, 5))
+            self.size = int(utils.mapRange(self.distance, 80.0, 312.0, 3, 10))
+            self.rMax = int(utils.mapRange(self.distance, 80.0, 312.0, 0, 255))
+            self.bMax = int(utils.mapRange(self.distance, 80.0, 312.0, 255, 0))
         
         #animation
-        self.startTime = time.time()   
+        self.startTime = time.time()  
+        
+        self.pingCount += 1 
 
-        for i in range(6, 1, -1):
-            self.drawSquareAtCenter(4, 10, i, utils.randomColor())                 
-            self.leds.show()
+        while not self.waitForPing():
+            self.randomizeSquares()
 
 
     def stop(self):
         self._stop = True
         self.distance = 0
+        self.pingCount = 0
 
     def pingInterval(self):
         """ The perferred freqeuncy of distance updates from the sensor """
-        return 1
+        return 3
 
     def waitForPing(self):
         if self._stop:
@@ -43,9 +50,25 @@ class AnimationSquares(Animation):
         elapsed = time.time() - self.startTime
         return elapsed >= self.pingInterval() - 0.05
 
+    def randomizeSquares(self):
+        self.setCoordinates()
+        for j in range(self.count):
+
+            color = (0,0,0) if j%5 == 0 else (randint(0, self.rMax), randint(0, 255), randint(0, self.bMax))
+
+            for i in range(1, self.size):
+                self.drawSquareAtCenter(self.coordinates[j][0], self.coordinates[j][1], i, color)
+                self.leds.show()
+
+    def setCoordinates(self):
+        self.coordinates = []
+        for i in range(self.count):
+            self.coordinates.append((randint(0,7), randint(0,self.leds.getRowCount()-1)))
+
 
     def drawSquareAtCenter(self, x, y, size, color):
         midpoint = int(size/2)
         for w in range(size):
             for h in range(size):
-                self.leds.setPixelColorXY(x+w-midpoint, y-h+midpoint, color[0], color[1], color[2])
+                self.leds.setPixelColorXY(utils.clamp(x+w-midpoint, 0, 7), utils.clamp(y-h+midpoint, 0, self.leds.getRowCount()-1), color[0], color[1], color[2])
+

@@ -12,6 +12,7 @@ from animation_leap import AnimationLeap
 from animation_mirror import AnimationMirror
 from animation_duel import AnimationDuel
 from animation_wave import AnimationWave
+from animation_squares import AnimationSquares
 
 class LEDShow(object):
     """ LEDShow manages the ultrasonic sensor readings and the LED animation sequence. """
@@ -21,13 +22,13 @@ class LEDShow(object):
     LED_PIN        = 18         # GPIO pin connected to the pixels (must support PWM!).
     LED_FREQ_HZ    = 800000     # LED signal frequency in hertz (usually 800khz)
     LED_DMA        = 5          # DMA channel to use for generating signal (try 5)
-    LED_BRIGHTNESS = 10         # Set to 0 for darkest and 255 for brightest
+    LED_BRIGHTNESS = 100        # Set to 0 for darkest and 255 for brightest
     LED_INVERT     = False      # True to invert the signal (when using NPN transistor level shift)
 
     #Sensor configuration
-    ANIMATION_DURATION = 10     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
+    ANIMATION_DURATION = 300     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
     MAX_DISTANCE = 350           # The maximum distance accepted from the ultrasonic sensor (cm)
-    RANDOMIZE = False             # Next animation is selected randomly
+    RANDOMIZE = True             # Next animation is selected randomly
 
 
     def __init__(self):
@@ -47,11 +48,12 @@ class LEDShow(object):
         #list of animations to cycle through
         self.animations = [
             AnimationWipe(self),
-            #AnimationPulse(self),
-            #AnimationLeap(self),                        
-            #AnimationMirror(self), 
-            #AnimationDuel(self)
-            AnimationWave(self)
+            AnimationPulse(self),
+            AnimationLeap(self),                        
+            AnimationMirror(self), 
+            AnimationDuel(self),
+            AnimationWave(self), 
+            AnimationSquares(self)
             ]   
 
         #initialized animation index
