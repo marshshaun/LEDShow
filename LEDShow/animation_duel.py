@@ -28,7 +28,7 @@ class AnimationDuel(Animation):
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
             self.distance = self.leds.distance
-            index = int(utils.mapRange(self.distance, 80.0, 312.0, len(self.colors)-1, 0))
+            index = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), len(self.colors)-1, 0))
             self.color = self.colors[index]
         
         #animation

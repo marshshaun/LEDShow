@@ -21,10 +21,10 @@ class AnimationSquares(Animation):
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
             self.distance = self.leds.distance
-            self.count = int(utils.mapRange(self.distance, 80.0, 312.0, 30, 5))
-            self.size = int(utils.mapRange(self.distance, 80.0, 312.0, 3, 10))
-            self.rMax = int(utils.mapRange(self.distance, 80.0, 312.0, 0, 255))
-            self.bMax = int(utils.mapRange(self.distance, 80.0, 312.0, 255, 0))
+            self.count = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 30, 5))
+            self.size = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 3, 10))
+            self.rMax = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 0, 255))
+            self.bMax = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 255, 0))
         
         #animation
         self.startTime = time.time()  

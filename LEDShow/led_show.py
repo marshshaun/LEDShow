@@ -27,7 +27,8 @@ class LEDShow(object):
 
     #Sensor configuration
     ANIMATION_DURATION = 300     # The collective inactive (non animating) time from animation start to finish(trigger next animation)
-    MAX_DISTANCE = 350           # The maximum distance accepted from the ultrasonic sensor (cm)
+    MAX_DISTANCE = 300.0         # The maximum distance accepted from the ultrasonic sensor (cm)
+    MIN_DISTANCE = 80.0          # The minimum distance accepted from the ultrasonic sensor (cm)
     RANDOMIZE = True             # Next animation is selected randomly
 
 
@@ -97,8 +98,7 @@ class LEDShow(object):
         #only update animation when new distance is less than MAX_DISTANCE
         #and current animation is valid
         distance = int(d)
-        if(distance < LEDShow.MAX_DISTANCE
-           and not self.currentAnimation == None):
+        if not self.currentAnimation == None:
             self.distance = distance
             self.currentAnimation.run()
 
@@ -201,6 +201,12 @@ class LEDShow(object):
 
     def getBrightness(self):
         return LEDShow.LED_BRIGHTNESS
+
+    def getMaxDistance(self):
+        return LEDShow.MAX_DISTANCE
+
+    def getMinDistance(self):
+        return LEDShow.MIN_DISTANCE
 
 
 

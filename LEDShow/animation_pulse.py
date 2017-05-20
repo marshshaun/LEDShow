@@ -19,8 +19,8 @@ class AnimationPulse(Animation):
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
             self.distance = self.leds.distance   
-            self.steps = int(utils.mapRange(self.distance, 80.0, 312.0, 10, 30))
-            self.hold = int(utils.mapRange(self.distance, 80.0, 312.0, 0, 0.2))            
+            self.steps = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 10, 30))
+            self.hold = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 0, 0.2))            
 
         #switch to random blue color on every 4th ping
         if self.pingCount % 4 == 0:

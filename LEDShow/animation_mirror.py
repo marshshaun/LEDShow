@@ -20,7 +20,7 @@ class AnimationMirror(Animation):
         #distance change
        if not utils.withinAccuracyRange(self.distance, self.leds.distance):
            self.distance = self.leds.distance   
-           self.destination = int(utils.mapRange(self.leds.distance, 80.0, 312.0, self.max, self.min))
+           self.destination = int(utils.mapRange(self.leds.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), self.max, self.min))
 
        #change colors onse
        if self.pingCount % 60 == 0:

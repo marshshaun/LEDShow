@@ -39,7 +39,7 @@ class AnimationWave(Animation):
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
             self.distance = self.leds.distance
-            self.colors = self.colorPairs[int(utils.mapRange(self.distance, 80.0, 312.0, 3, 0))]
+            self.colors = self.colorPairs[int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 3, 0))]
         
         #animation
         self.startTime = time.time()   

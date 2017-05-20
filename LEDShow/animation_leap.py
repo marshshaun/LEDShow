@@ -26,7 +26,7 @@ class AnimationLeap(Animation):
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
             self.distance = self.leds.distance   
-            self.destination = int(utils.mapRange(self.distance, 80.0, 312.0, self.sections-1, 0))              
+            self.destination = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), self.sections-1, 0))              
 
         #change colors every set interval 
         if self.pingCount % 60 == 0:      

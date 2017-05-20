@@ -21,7 +21,7 @@ class AnimationWipe(Animation):
             self.distance = self.leds.distance
             self.bottomIndex = 0    
             self.topIndex = 0
-            self.pixel = int(utils.mapRange(self.distance, 1.0, 350, 0.0, self.leds.numPixels()-1))        
+            self.pixel = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 0.0, self.leds.numPixels()-1))        
         
         #animation
         self.startTime = time.time()
