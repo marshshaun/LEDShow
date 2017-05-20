@@ -73,15 +73,21 @@ class AnimationLeap(Animation):
     
     def randomizeColors(self):
         self.colors = [
-        self.randomRG(), 
-        self.randomRG(),
-        self.randomRG(),
-        self.randomRG(),
-        self.randomRG(),
-        self.randomRG()]
+        self.randomChannel(), 
+        self.randomChannel(),
+        self.randomChannel(),
+        self.randomChannel(),
+        self.randomChannel(),
+        self.randomChannel()]
 
-    def randomRG(self):
-        return (randint(10,255), randint(0,255), randint(0,0))
+    def randomChannel(self):
+        channel = randint(0,2)
+        if channel == 0:
+            return utils.randomRed()
+        elif channel == 1:
+            return utils.randomGreen()
+        else:
+            return utils.randomBlue()
 
     def drawSquare(self, x, y, c):
         for w in range(8):

@@ -116,5 +116,14 @@ def transitionBrightness(fromBrightness, toBrightness, onStep, steps=10):
         fromBrightness += step
         onStep(int(fromBrightness))
 
+def randomRed():
+    return (randint(20, 255), randint(0, 50), randint(0, 100))
+
+def randomGreen():
+    return (randint(0, 5), randint(20, 255), randint(0, 200))
+
+def randomBlue():
+    return (randint(0, 5), randint(0, 200), randint(20,255))
+
 
             

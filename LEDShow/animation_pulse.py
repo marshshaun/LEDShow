@@ -9,7 +9,7 @@ class AnimationPulse(Animation):
         self.leds = leds
         self.distance = 0
         self.pingCount = 0
-        self.blue = self.randomBlue()
+        self.blue = utils.randomBlue()
 
     def run(self):    
         
@@ -24,7 +24,7 @@ class AnimationPulse(Animation):
 
         #switch to random blue color on every 4th ping
         if self.pingCount % 4 == 0:
-            self.blue = self.randomBlue()
+            self.blue = utils.randomBlue()
         self.pingCount += 1
 
         #run pulse animation
@@ -42,10 +42,6 @@ class AnimationPulse(Animation):
     def fade(self, brightness):
         self.leds.setBrightness(brightness)
         self.leds.show()
-
-
-    def randomBlue(self):
-        return (randint(0, 5), randint(0, 200), randint(20,255))
 
     def stop(self):
         self._stop = True
