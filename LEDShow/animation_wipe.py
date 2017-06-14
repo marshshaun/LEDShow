@@ -8,8 +8,9 @@ class AnimationWipe(Animation):
     def __init__(self, leds):
         """ Initializes running state """
         self.leds = leds
-        self.wipeCount = 4  #number of rows to wipe at a time
+        self.wipeCount = 6  #number of rows to wipe at a time
         self.stop() 
+        self.temp = 0
 
     def run(self):      
 
@@ -20,18 +21,24 @@ class AnimationWipe(Animation):
         #distance change
         if not utils.withinAccuracyRange(self.distance, self.leds.distance):
             self.distance = self.leds.distance
-            self.pixel = int(utils.mapRange(self.distance, self.leds.getMinDistance(), self.leds.getMaxDistance(), 0.0, self.leds.numPixels()-1))        
+            self.pixel = int(utils.mapRange(self.distance, 0.0, self.leds.getMaxDistance(), 50.0, self.leds.numPixels()-1))            
         
         #animation
         self.startTime = time.time()
+
         self.bottomSection(self.pixel)
         self.topSection(self.pixel)
+
+
+        #self.bottomSectionOriginal(self.pixel)
+        #self.topSectionOriginal(self.pixel)
 
     def stop(self):
         self._stop = True
         self.bottomIndex = 0
         self.topIndex = 0
         self.distance = 0
+        self.top = True
 
     def pingInterval(self):
         """ The perferred freqeuncy of distance updates from the sensor """
@@ -41,9 +48,11 @@ class AnimationWipe(Animation):
         if self._stop:
             return True
         elapsed = time.time() - self.startTime
-        return elapsed >= self.pingInterval() - 0.05
+        interval = self.pingInterval() - 0.05
+        wait = elapsed >= interval
+        return wait
     
-    #def bottomSection(self, pixel):
+    #def bottomSectionOriginal(self, pixel):
     #    for i in range(self.bottomIndex, pixel):
     #        self.leds.setPixelColor(i, pixel, 24, 0)
     #        self.leds.show()
@@ -51,7 +60,7 @@ class AnimationWipe(Animation):
     #            self.bottomIndex = i
     #            return
 
-    #def topSection(self, pixel):
+    #def topSectionOriginal(self, pixel):
     #    for i in range(self.topIndex, self.leds.numPixels()-pixel):
     #        self.leds.setPixelColor(i+pixel, 0, 80, pixel*2)
     #        self.leds.show()
@@ -60,7 +69,7 @@ class AnimationWipe(Animation):
     #            return
 
     def bottomSection(self, pixel):
-        row = int(pixel/self.leds.getColumnCount()) - 1
+        row = int(pixel/self.leds.getColumnCount()) 
         direction = 1
         for i in range(self.bottomIndex, row, self.wipeCount):
             self.wipeRows(i, self.wipeCount, direction, pixel%256, 24, 0)
@@ -68,25 +77,29 @@ class AnimationWipe(Animation):
             if self.waitForPing():
                 self.bottomIndex = i
                 return
-        self.bottomIndex = 0
+            self.bottomIndex = row
+        self.top = True
 
     def topSection(self, pixel):
-        row = int(pixel/self.leds.getColumnCount()) -1 
+        row = int(pixel/self.leds.getColumnCount()) 
         direction = 1
         for i in range(self.topIndex, self.leds.getRowCount()-1, self.wipeCount):
-            self.wipeRows(i+row, self.wipeCount, direction, 0, 80, (pixel%256)*2)
+            self.wipeRows(i, self.wipeCount, direction, 0, 80, (pixel%256)*2)
             direction = 1 if direction < 0 else -1
             if self.waitForPing():
-                self.topIndex = i
+                self.topIndex = i + self.wipeCount
                 return  
+            self.topIndex = row
         self.topIndex = 0
+        self.bottomIndex = 0
+        self.top = False
             
 
     def wipeRows(self, start, count, direction, r, g, b):
-        x1 = self.leds.getColumnCount()-1 if direction < 0 else 0
-        x2 = self.leds.getColumnCount()-1 if x1 == 0 else 0
+        x1 = self.leds.getColumnCount() if direction < 0 else 0
+        x2 = self.leds.getColumnCount() if x1 == 0 else -1
         for x in range(x1, x2, direction):
-            for y in range(start, start+count-1):
+            for y in range(start, start+count):
                 self.leds.setPixelColorXY(x, y, r, g, b)
             self.leds.show()
 
